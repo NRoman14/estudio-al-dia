@@ -4,7 +4,7 @@ Estudio al Día es un proyecto de aplicación web en Laravel para organizar tare
 
 ## Sugerencias con Groq
 
-Desde el detalle de una tarea, el botón **Sugerir pasos** usará Groq para generar tres acciones concretas a partir del título y la descripción de la tarea. Por ejemplo, para preparar una exposición de Base de Datos, puede sugerir definir el tema, ordenar los contenidos y preparar la primera diapositiva.
+Desde el detalle de una tarea, el botón **Sugerir pasos** usa Groq para generar tres acciones concretas a partir del título y la descripción de la tarea. Por ejemplo, para preparar una exposición de Base de Datos, puede sugerir definir el tema, ordenar los contenidos y preparar la primera diapositiva.
 
 ## Prototipo en Figma
 
@@ -23,10 +23,10 @@ php artisan serve
 
 Abre <http://127.0.0.1:8000> y selecciona **Crear cuenta**. Las tareas se guardan en `database/database.sqlite`. Si el proyecto ya está instalado, basta con ejecutar `php artisan serve`. Para aplicar nuevas migraciones, ejecuta `php artisan migrate`.
 
-## Activar Grok
+## Activar Groq
 
-Agrega tu clave a `XAI_API_KEY` en el archivo local `.env`. Puedes ajustar `XAI_MODEL` si tu cuenta de xAI usa otro modelo. La app envía el título y la descripción al presionar **Sugerir pasos**. Si falta la clave o el servicio no responde, la ficha muestra un aviso y las tareas siguen disponibles.
+Crea una clave en [GroqCloud](https://console.groq.com/keys) y guárdala en `GROQ_API_KEY` en el archivo local `.env`. El modelo predeterminado es `openai/gpt-oss-20b`. Si necesitas otro modelo compatible con salidas estructuradas, configúralo en `GROQ_MODEL`. Ejecuta `php artisan config:clear` para cargar los cambios. La app envía el título y la descripción al presionar **Sugerir pasos**. Si falta la clave o el servicio no responde, la ficha muestra un aviso y las tareas siguen disponibles.
 
 ## Pruebas
 
-Ejecuta `php artisan test`. Las pruebas usan SQLite en memoria y una respuesta simulada de Grok. Cubren el flujo de cuentas y tareas, los permisos entre dos usuarios y la respuesta ante una cuota agotada.
+Ejecuta `php artisan test`. Las pruebas usan SQLite en memoria y una respuesta simulada de Groq. Cubren el flujo de cuentas y tareas, los permisos entre dos usuarios y la respuesta ante una cuota agotada.
