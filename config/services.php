@@ -14,9 +14,9 @@ return [
     |
     */
 
-    'xai' => [
-        'key' => env('XAI_API_KEY'),
-        'model' => env('XAI_MODEL', 'grok-4.7'),
+    'groq' => [
+        'key' => env('GROQ_API_KEY'),
+        'model' => env('GROQ_MODEL', 'openai/gpt-oss-20b'),
     ],
 
     'postmark' => [

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Task;
-use App\Services\Grok;
+use App\Services\Groq;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
@@ -83,17 +83,17 @@ class TaskController extends Controller
         return to_route('tasks.index')->with('status', 'Tarea eliminada.');
     }
 
-    public function suggest(Task $task, Grok $grok): RedirectResponse
+    public function suggest(Task $task, Groq $groq): RedirectResponse
     {
         Gate::authorize('update', $task);
 
-        $steps = $grok->suggestSteps($task);
+        $steps = $groq->suggestSteps($task);
 
         if ($steps === null) {
             return to_route('tasks.show', $task)->with('suggestion_error', 'No pudimos sugerir pasos ahora. Puedes seguir gestionando tus tareas e intentarlo más tarde.');
         }
 
-        // An edit may have changed the text while Grok was generating the steps.
+        // An edit may have changed the text while Groq was generating the steps.
         $saved = Task::query()
             ->whereKey($task->id)
             ->where('title', $task->title)

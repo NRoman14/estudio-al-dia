@@ -23,7 +23,7 @@
                 <span class="brand-mark"><x-icon name="sparkles" /></span>
                 <div>
                     <h2 id="suggestion-title">¿No sabes por dónde empezar?</h2>
-                    <p>Grok puede convertir esta tarea en tres primeros pasos concretos.</p>
+                    <p>Groq puede convertir esta tarea en tres primeros pasos concretos.</p>
                     @if($task->steps)
                         <ol class="steps">
                             @foreach($task->steps as $step)

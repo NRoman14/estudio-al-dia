@@ -93,23 +93,20 @@ class StudyWorkflowTest extends TestCase
         $this->assertModelExists($task);
     }
 
-    public function test_grok_suggestions_only_send_task_text_and_handle_unavailable_service(): void
+    public function test_groq_suggestions_only_send_task_text_and_handle_unavailable_service(): void
     {
         $user = User::factory()->create();
         $task = $user->tasks()->create(['title' => 'Exposición', 'description' => 'Buscar ejemplos.']);
-        $url = 'https://api.x.ai/v1/responses';
+        $url = 'https://api.groq.com/openai/v1/chat/completions';
         $steps = ['Elige el tema central.', 'Busca dos ejemplos.', 'Esboza una diapositiva.'];
-        config(['services.xai.key' => 'test-key']);
+        config(['services.groq.key' => 'test-key']);
 
         Http::fake([
             $url => Http::sequence()
                 ->push([
-                    'output' => [
-                        ['type' => 'reasoning'],
-                        ['type' => 'message', 'content' => [
-                            ['type' => 'output_text', 'text' => json_encode(['steps' => $steps])],
-                        ]],
-                    ],
+                    'choices' => [[
+                        'message' => ['content' => json_encode(['steps' => $steps])],
+                    ]],
                 ])
                 ->pushStatus(429),
         ]);
@@ -120,8 +117,7 @@ class StudyWorkflowTest extends TestCase
         $this->get(route('tasks.show', $task))->assertSeeInOrder($steps);
 
         Http::assertSent(fn (Request $request) => $request->url() === $url
-            && $request['store'] === false
-            && $request['input'][1] === ['role' => 'user', 'content' => "Exposición\n\nBuscar ejemplos."]
+            && $request['messages'][1] === ['role' => 'user', 'content' => "Exposición\n\nBuscar ejemplos."]
             && ! str_contains($request->body(), $user->email));
 
         $this->post(route('tasks.suggest', $task))->assertSessionHas('suggestion_error');
@@ -131,7 +127,7 @@ class StudyWorkflowTest extends TestCase
         $this->put(route('tasks.update', $task), ['title' => $task->title, 'description' => 'Otro enfoque.']);
         $this->assertNull($task->fresh()->steps);
 
-        config(['services.xai.key' => null]);
+        config(['services.groq.key' => null]);
         $this->post(route('tasks.suggest', $task))->assertSessionHas('suggestion_error');
         Http::assertSentCount(2);
     }
