@@ -1,3 +1,15 @@
+for (const button of document.querySelectorAll('[data-password-toggle]')) {
+    const password = document.getElementById(button.getAttribute('aria-controls'));
+
+    button.addEventListener('click', () => {
+        const shouldShow = password.type === 'password';
+        password.type = shouldShow ? 'text' : 'password';
+        button.textContent = shouldShow ? 'Ocultar contraseña' : 'Mostrar contraseña';
+    });
+
+    button.hidden = false;
+}
+
 for (const counter of document.querySelectorAll('[data-count]')) {
     const field = document.getElementById(counter.dataset.count);
     const update = () => { counter.textContent = field.value.length; };

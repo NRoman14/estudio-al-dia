@@ -33,7 +33,10 @@
             </div>
             <div class="field">
                 <label for="password">Contraseña</label>
-                <input id="password" type="password" name="password" autocomplete="{{ $registering ? 'new-password' : 'current-password' }}" placeholder="••••••••••" required @if($registering) minlength="8" @endif @error('password') aria-invalid="true" aria-describedby="password-error" @else @if($registering) aria-describedby="password-hint" @endif @enderror>
+                <div class="password-field">
+                    <input id="password" type="password" name="password" autocomplete="{{ $registering ? 'new-password' : 'current-password' }}" placeholder="••••••••••" required @if($registering) minlength="8" @endif @error('password') aria-invalid="true" aria-describedby="password-error" @else @if($registering) aria-describedby="password-hint" @endif @enderror>
+                    <button type="button" class="password-toggle" aria-controls="password" data-password-toggle hidden>Mostrar contraseña</button>
+                </div>
                 @error('password') <small class="field-error" id="password-error">{{ $message }}</small> @enderror
                 @if($registering)
                     <small id="password-hint">Usa 8 caracteres como mínimo.</small>

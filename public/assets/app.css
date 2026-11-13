@@ -211,6 +211,23 @@ button:disabled { cursor: wait; opacity: .7; }
 }
 .field [aria-invalid] { border-color: #bd302d; }
 .field .field-error, .field-error { color: #a52723; }
+.password-field {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: stretch;
+    gap: 8px;
+}
+.password-field:has(.password-toggle[hidden]) { grid-template-columns: minmax(0, 1fr); }
+.password-toggle {
+    padding-inline: 10px;
+    border: 1px solid var(--input-border);
+    border-radius: 14px;
+    background: var(--paper);
+    color: var(--violet);
+    font-size: 13px;
+    font-weight: 700;
+}
+.password-toggle:hover { background: #eff0fb; }
 .notice {
     margin-bottom: 20px;
     padding: 11px 14px;
