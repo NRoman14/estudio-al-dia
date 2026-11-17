@@ -463,3 +463,27 @@ button:disabled { cursor: wait; opacity: .7; }
     .nav-link { padding-inline: 8px; }
     .suggestion { gap: 10px; }
 }
+
+/* Fecha de entrega */
+.optional { font-weight: 400; color: var(--muted); }
+.field input[type="date"] { max-width: 220px; }
+.detail-badges { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.due {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    width: fit-content;
+    margin-top: 8px;
+    padding: 4px 9px;
+    border-radius: 999px;
+    background: #eef0fb;
+    color: var(--violet);
+    font-size: 12px;
+    font-weight: 700;
+}
+.detail-badges .due { margin-top: 0; padding-block: 6px; }
+.due .icon { width: 13px; height: 13px; }
+.due-soon { background: #fcf4e8; color: #904922; }
+.due-late { background: #fdecea; color: #a52723; }
+.due-muted { background: #eef1f5; color: var(--muted); }
+.task-row.overdue { border-color: #f1c4c1; }

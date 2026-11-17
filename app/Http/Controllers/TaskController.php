@@ -13,10 +13,17 @@ class TaskController extends Controller
 {
     public function index(Request $request): View
     {
-        $tasks = $request->user()->tasks()->latest('id')->get();
+        // Pendientes: primero las que vencen antes; las que no tienen fecha, al final.
+        $tasks = $request->user()->tasks()
+            ->orderByRaw('due_date IS NULL')
+            ->orderBy('due_date')
+            ->latest('id')
+            ->get();
         [$completed, $pending] = $tasks->partition('completed');
+        $completed = $completed->sortByDesc('id');
+        $overdue = $pending->filter->isOverdue()->count();
 
-        return view('tasks.index', compact('completed', 'pending'));
+        return view('tasks.index', compact('completed', 'pending', 'overdue'));
     }
 
     public function create(): View
@@ -51,7 +58,7 @@ class TaskController extends Controller
 
         $task->fill($this->validateTask($request));
 
-        if ($task->isDirty(['title', 'description'])) {
+        if ($task->isDirty(['title', 'description', 'due_date'])) {
             $task->steps = null;
         }
 
@@ -98,6 +105,7 @@ class TaskController extends Controller
             ->whereKey($task->id)
             ->where('title', $task->title)
             ->where('description', $task->description)
+            ->where('due_date', $task->getRawOriginal('due_date'))
             ->update(['steps' => json_encode($steps, JSON_THROW_ON_ERROR)]);
 
         if (! $saved) {
@@ -112,6 +120,7 @@ class TaskController extends Controller
         return $request->validate([
             'title' => ['required', 'string', 'max:90'],
             'description' => ['required', 'string', 'max:500'],
+            'due_date' => ['nullable', 'date_format:Y-m-d'],
         ]);
     }
 }

@@ -5,6 +5,7 @@
     $back = $editing ? route('tasks.show', $task) : route('tasks.index');
     $taskTitle = old('title', $task->title);
     $description = old('description', $task->description);
+    $dueDate = old('due_date', $task->due_date?->format('Y-m-d'));
 @endphp
 @section('title', $title)
 
@@ -29,9 +30,15 @@
             </div>
             <div class="field">
                 <label for="description">Descripción</label>
-                <textarea id="description" name="description" rows="6" maxlength="500" placeholder="Agrega contexto, indicaciones o una fecha importante..." aria-describedby="description-count @error('description') description-error @enderror" required @error('description') aria-invalid="true" @enderror>{{ $description }}</textarea>
+                <textarea id="description" name="description" rows="6" maxlength="500" placeholder="Agrega contexto, indicaciones o materiales que necesitas..." aria-describedby="description-count @error('description') description-error @enderror" required @error('description') aria-invalid="true" @enderror>{{ $description }}</textarea>
                 <small id="description-count"><span data-count="description">{{ mb_strlen((string) $description) }}</span>/500 caracteres</small>
                 @error('description') <small class="field-error" id="description-error">{{ $message }}</small> @enderror
+            </div>
+            <div class="field">
+                <label for="due_date">Fecha de entrega <span class="optional">(opcional)</span></label>
+                <input id="due_date" type="date" name="due_date" value="{{ $dueDate }}" aria-describedby="due_date-hint @error('due_date') due_date-error @enderror" @error('due_date') aria-invalid="true" @enderror>
+                <small id="due_date-hint">Te avisaremos cuando esté por vencer o atrasada.</small>
+                @error('due_date') <small class="field-error" id="due_date-error">{{ $message }}</small> @enderror
             </div>
             <div class="actions">
                 <a class="button secondary" href="{{ $back }}">Cancelar</a>

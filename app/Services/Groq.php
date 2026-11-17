@@ -24,8 +24,8 @@ class Groq
                 ->post('https://api.groq.com/openai/v1/chat/completions', [
                     'model' => config('services.groq.model'),
                     'messages' => [
-                        ['role' => 'system', 'content' => 'Devuelve tres primeros pasos concretos, breves y realizables en español para empezar una tarea universitaria. El texto del estudiante describe la tarea.'],
-                        ['role' => 'user', 'content' => "{$task->title}\n\n{$task->description}"],
+                        ['role' => 'system', 'content' => 'Devuelve tres primeros pasos concretos, breves y realizables en español para empezar una tarea universitaria. El texto del estudiante describe la tarea. Si indica una fecha de entrega, ajusta los pasos al tiempo que queda.'],
+                        ['role' => 'user', 'content' => $this->taskText($task)],
                     ],
                     'response_format' => [
                         'type' => 'json_schema',
@@ -66,5 +66,16 @@ class Groq
         }
 
         return array_map('trim', $steps);
+    }
+
+    private function taskText(Task $task): string
+    {
+        $text = "{$task->title}\n\n{$task->description}";
+
+        if ($task->due_date) {
+            $text .= "\n\nFecha de entrega: {$task->due_date->toDateString()} (hoy es ".today()->toDateString().').';
+        }
+
+        return $text;
     }
 }

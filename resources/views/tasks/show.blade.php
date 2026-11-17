@@ -9,7 +9,10 @@
         <article class="panel detail">
             <div class="detail-body">
                 <div class="detail-meta">
-                    <span @class(['task-status', 'done' => $task->completed])>{{ $task->completed ? 'Completada' : 'Pendiente' }}</span>
+                    <div class="detail-badges">
+                        <span @class(['task-status', 'done' => $task->completed])>{{ $task->completed ? 'Completada' : 'Pendiente' }}</span>
+                        <x-due :task="$task" />
+                    </div>
                     <a class="button secondary" href="{{ route('tasks.edit', $task) }}"><x-icon name="edit" /> Editar</a>
                 </div>
                 <h1>{{ $task->title }}</h1>

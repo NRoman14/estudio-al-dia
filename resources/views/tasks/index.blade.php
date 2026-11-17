@@ -18,7 +18,9 @@
             <div class="focus-copy">
                 <h2 id="focus-title">Un paso a la vez</h2>
                 <p>
-                    @if($pending->isEmpty())
+                    @if($overdue > 0)
+                        {{ $overdue === 1 ? 'Tienes 1 tarea atrasada' : "Tienes {$overdue} tareas atrasadas" }}: empieza por {{ $overdue === 1 ? 'ella' : 'la primera' }} y avanza durante 20 minutos.
+                    @elseif($pending->isEmpty())
                         {{ $completed->isEmpty() ? 'Agrega una tarea para empezar a organizar tu estudio.' : 'Estás al día con tus tareas.' }}
                     @elseif($pending->count() === 1)
                         Dedica 20 minutos a tu tarea pendiente.
@@ -41,7 +43,7 @@
                 </div>
                 <ul class="task-list">
                     @forelse($tasks as $task)
-                        <li @class(['task-row', 'completed' => $task->completed])>
+                        <li @class(['task-row', 'completed' => $task->completed, 'overdue' => $task->isOverdue()])>
                             <form method="POST" action="{{ route('tasks.completion', $task) }}">
                                 @csrf
                                 @method('PATCH')
@@ -55,6 +57,7 @@
                                 <span>
                                     <strong>{{ $task->title }}</strong>
                                     <span class="task-preview">{{ $task->description }}</span>
+                                    <x-due :task="$task" />
                                 </span>
                                 <x-icon name="next" />
                             </a>

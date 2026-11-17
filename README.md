@@ -2,6 +2,12 @@
 
 Estudio al Día es un proyecto de aplicación web en Laravel para organizar tareas universitarias. Cada estudiante podrá crear, editar y eliminar sus tareas, además de marcarlas como completadas.
 
+## Fecha de entrega
+
+Cada tarea puede tener una fecha de entrega opcional. La lista ordena las pendientes por fecha (las que no tienen fecha van al final) y muestra un aviso: **Atrasada**, **Vence hoy**, **Vence mañana** o **Vence en N días**. Si hay tareas atrasadas, el panel "Un paso a la vez" lo indica. La fecha también se envía a Groq para que los pasos sugeridos consideren el plazo.
+
+Los avisos usan la zona horaria de `APP_TIMEZONE` en el `.env` (por ejemplo `America/Santiago`). Si no se define, se usa UTC.
+
 ## Sugerencias con Groq
 
 Desde el detalle de una tarea, el botón **Sugerir pasos** usa Groq para generar tres acciones concretas a partir del título y la descripción de la tarea. Por ejemplo, para preparar una exposición de Base de Datos, puede sugerir definir el tema, ordenar los contenidos y preparar la primera diapositiva.
@@ -29,4 +35,4 @@ Crea una clave en [GroqCloud](https://console.groq.com/keys) y guárdala en `GRO
 
 ## Pruebas
 
-Ejecuta `php artisan test`. Las pruebas usan SQLite en memoria y una respuesta simulada de Groq. Cubren el flujo de cuentas y tareas, los permisos entre dos usuarios y la respuesta ante una cuota agotada.
+Ejecuta `php artisan test`. Las pruebas usan SQLite en memoria y una respuesta simulada de Groq. Cubren el flujo de cuentas y tareas, los permisos entre dos usuarios, la respuesta ante una cuota agotada, y la fecha de entrega (orden, avisos y validación).

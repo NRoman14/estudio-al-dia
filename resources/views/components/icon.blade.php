@@ -13,6 +13,7 @@
         @case('logout') <path d="M13 3h5a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-5M4 12h11m-4-4 4 4-4 4"/> @break
         @case('close') <path d="m6 6 12 12M18 6 6 18"/> @break
         @case('circle-check') <circle cx="12" cy="12" r="9"/><path d="m8 12 3 3 5-6"/> @break
+        @case('calendar') <rect x="4" y="5" width="16" height="15" rx="2"/><path d="M8 3v4M16 3v4M4 10h16"/> @break
         @case('undo') <path d="M9 7 4 12l5 5M4 12h12a4 4 0 0 1 4 4"/> @break
     @endswitch
 </svg>
